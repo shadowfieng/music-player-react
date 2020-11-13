@@ -1,5 +1,4 @@
 .player {
-    min-height: 20vh;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -25,27 +24,12 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem;
-    width: 30%;
+    padding: 2rem;
     svg {
         cursor: pointer;
     }
 }
 
-input[type='range']:focus {
-    outline: none;
-}
-
-input[type='range']::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    height: 16px;
-    width: 16px;
-}
-input[type='range']::-moz-slider-thumb {
-    -webkit-appearance: none;
-    background: transparent;
-    border: none;
-}
 .track {
     background: lightblue;
     width: 100%;
@@ -66,11 +50,90 @@ input[type='range']::-moz-slider-thumb {
     pointer-events: none;
 }
 
+.track-volume {
+    // display: flex;
+    // align-items: center;
+    // justify-content: space-around;
+
+    background: coral;
+    height: 1rem;
+    position: relative;
+    border-radius: 1rem;
+    overflow: hidden;
+    width: 100%;
+
+    input {
+        width: 100%;
+        border: none;
+        -webkit-appearance: none;
+        background-color: transparent;
+        cursor: pointer;
+    }
+    // transform: rotate(90deg);
+}
+.play-volume-wrapper {
+    width: 30%;
+}
+
+.animate-volume {
+    width: 100%;
+    height: 100%;
+    background: rgb(204, 204, 204);
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translateX(0%);
+    pointer-events: none;
+    input {
+        width: 100%;
+        -webkit-appearance: none;
+        background-color: transparent;
+        cursor: pointer;
+    }
+}
+
+.volume-control {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+.volume {
+    margin-left: 15px;
+    cursor: pointer;
+}
+
+input[type='range']:focus {
+    outline: none;
+}
+
+input[type='range']::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    height: 16px;
+    width: 16px;
+}
+input[type='range']::-moz-slider-thumb {
+    -webkit-appearance: none;
+    background: transparent;
+    border: none;
+}
+
 @media screen and (max-width: 768px) {
     .time-control {
         width: 90%;
     }
     .play-control {
-        width: 60%;
+        width: 100%;
+    }
+    .play-volume-wrapper {
+        width: 50%;
+    }
+    .track-volume {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 340px) {
+    .track-volume {
+        width: 50%;
     }
 }

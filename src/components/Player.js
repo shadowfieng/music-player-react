@@ -4,7 +4,10 @@ import {
     faAngleLeft,
     faAngleRight,
     faPause,
+    faVolumeUp,
+    faVolumeMute,
 } from '@fortawesome/free-solid-svg-icons';
+import { useState } from 'react';
 
 const Player = ({
     currentSong,
@@ -17,6 +20,10 @@ const Player = ({
     songs,
     setSongs,
 }) => {
+    const [volume, setVolume] = useState(60);
+    const [isMuted, setIsMuted] = useState(false);
+    const [prevVolumeValue, setPrevVolumeValue] = useState(volume);
+
     const activeLibraryHandler = (nextPrev) => {
         const newSongs = songs.map((song) => {
             if (song.id === nextPrev.id) {
@@ -34,6 +41,7 @@ const Player = ({
 
         setSongs(newSongs);
     };
+
     /* EventHandlers */
     const playSongHandler = () => {
         if (isPlaying) {
@@ -72,11 +80,41 @@ const Player = ({
         if (isPlaying) audioRef.current.play();
     };
 
+    const onVolumeClickHandler = () => {
+        debugger;
+        if (isMuted) {
+            audioRef.current.volume = prevVolumeValue / 100;
+            setVolume(prevVolumeValue);
+            setIsMuted(false);
+        } else {
+            audioRef.current.volume = 0;
+            setIsMuted(true);
+            setPrevVolumeValue(volume);
+            setVolume(0);
+        }
+    };
+
+    const onVolumeChangeHandler = (e) => {
+        const volumeLevel = e.target.value / 100;
+
+        audioRef.current.volume = volumeLevel;
+
+        setVolume(e.target.value);
+    };
+
     const trackAnim = {
-        transform: `translateX(${songInfo.animationPercentage}%)`,
+        track: {
+            transform: `translateX(${songInfo.animationPercentage}%)`,
+        },
+        volume: {
+            transform: `translateX(${volume}%)`,
+        },
     };
 
     const trackBackground = {
+        background: `linear-gradient(to right, ${currentSong.color[0]}, ${currentSong.color[1]})`,
+    };
+    const volumeBackground = {
         background: `linear-gradient(to right, ${currentSong.color[0]}, ${currentSong.color[1]})`,
     };
 
@@ -101,30 +139,58 @@ const Player = ({
                         value={songInfo.current}
                         onChange={dragHandler}
                     />
-                    <div style={trackAnim} className="animate-track"></div>
+                    <div
+                        style={trackAnim.track}
+                        className="animate-track"
+                    ></div>
                 </div>
 
                 <p>{songInfo.duration ? getTime(songInfo.duration) : '0:00'}</p>
             </div>
-            <div className="play-control">
-                <FontAwesomeIcon
-                    className="skip-back"
-                    onClick={() => skipTrackHandler('skip-back')}
-                    size="2x"
-                    icon={faAngleLeft}
-                />
-                <FontAwesomeIcon
-                    className="play"
-                    size="2x"
-                    icon={isPlaying ? faPause : faPlay}
-                    onClick={playSongHandler}
-                />
-                <FontAwesomeIcon
-                    className="skip-forward"
-                    onClick={() => skipTrackHandler('skip-forward')}
-                    size="2x"
-                    icon={faAngleRight}
-                />
+            <div className="play-volume-wrapper">
+                <div className="play-control">
+                    <FontAwesomeIcon
+                        className="skip-back"
+                        onClick={() => skipTrackHandler('skip-back')}
+                        size="2x"
+                        icon={faAngleLeft}
+                    />
+                    <div style={{ padding: '0 10px' }}>
+                        <FontAwesomeIcon
+                            className="play"
+                            size="2x"
+                            icon={isPlaying ? faPause : faPlay}
+                            onClick={playSongHandler}
+                        />
+                    </div>
+
+                    <FontAwesomeIcon
+                        className="skip-forward"
+                        onClick={() => skipTrackHandler('skip-forward')}
+                        size="2x"
+                        icon={faAngleRight}
+                    />
+                </div>
+                <div className="volume-control">
+                    <div className="track-volume" style={volumeBackground}>
+                        <input
+                            type="range"
+                            min={0}
+                            max={100}
+                            onChange={onVolumeChangeHandler}
+                            value={volume}
+                        />
+                        <div
+                            style={trackAnim.volume}
+                            className="animate-volume"
+                        ></div>
+                    </div>
+                    <FontAwesomeIcon
+                        onClick={onVolumeClickHandler}
+                        className={'volume'}
+                        icon={isMuted ? faVolumeMute : faVolumeUp}
+                    />
+                </div>
             </div>
         </div>
     );
