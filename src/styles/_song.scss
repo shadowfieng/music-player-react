@@ -7,6 +7,8 @@
     img {
         width: 20%;
         border-radius: 50%;
+        transform: rotate(0deg);
+        transition: transform 0.5s ease-out;
     }
     h2 {
         padding: 3rem 1rem 1rem 1rem;

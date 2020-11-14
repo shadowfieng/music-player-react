@@ -81,7 +81,6 @@ const Player = ({
     };
 
     const onVolumeClickHandler = () => {
-        debugger;
         if (isMuted) {
             audioRef.current.volume = prevVolumeValue / 100;
             setVolume(prevVolumeValue);
