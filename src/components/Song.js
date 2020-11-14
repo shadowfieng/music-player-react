@@ -4,8 +4,6 @@ const Song = ({ currentSong, isPlaying, songInfo }) => {
             isPlaying ? songInfo.current * 10 : songInfo.current * 10
         }deg)`,
     };
-
-    console.log(songAnimation);
     return (
         <div className="song-container">
             <img
